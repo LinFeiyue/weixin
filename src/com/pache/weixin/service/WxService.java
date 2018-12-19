@@ -44,7 +44,6 @@ public class WxService {
 	 * @Description:进行sha1,加密 
 	 * @author LinLiangjia 
 	 * @date 2018-12-16 下午9:40:12
-	 * @param str
 	 * @return
 	 */
 	private static String sha1(String src) {
