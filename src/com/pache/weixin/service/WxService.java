@@ -1,8 +1,16 @@
 package com.pache.weixin.service;
 
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author LinLiangjia
@@ -68,9 +76,35 @@ public class WxService {
 			}
 			return sb.toString();
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	/**
+	 * 处理消息和事件推送
+	 * @param is
+	 * @return
+	 */
+	public static Map<String, String> parseRequest(InputStream is) {
+
+		Map<String,String> map = new HashMap<String, String>();
+		SAXReader reader = new SAXReader();
+		try{
+			//读取输入流，h获取文档对象
+			Document document = reader.read(is);
+			//根据文档对象获取根节点
+			Element root = document.getRootElement();
+			//获取根节点得所有子节点
+			List<Element> elements =  root.elements();
+			for(Element element : elements){
+				map.put(element.getName(),element.getStringValue());
+			}
+			return map;
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 }

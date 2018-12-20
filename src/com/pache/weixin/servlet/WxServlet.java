@@ -2,6 +2,7 @@ package com.pache.weixin.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -63,15 +64,34 @@ public class WxServlet extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("post");
 		request.setCharacterEncoding("UTF-8");
-		ServletInputStream ss = request.getInputStream();
-		byte[] b = new byte[1024];
-		int len;
-		StringBuilder sb = new StringBuilder();
-		while((len = ss.read(b)) != -1){
-			sb.append(new String(b,0,len));
-		}
-		System.out.println(sb.toString());
+		response.setCharacterEncoding("UTF-8");
+
+		//查看用户发送到服务器得普通消息
+//		lookMsgInfo(request,response);
+
+		Map<String,String> requestMap = WxService.parseRequest(request.getInputStream());
+
+		System.out.println(requestMap);
 	}
 
+	/**
+	 * 查看用户发送得普通消息
+	 * @param request
+	 * @param response
+	 */
+	private void lookMsgInfo(HttpServletRequest request, HttpServletResponse response){
+		try{
+			ServletInputStream ss = request.getInputStream();
+			byte[] b = new byte[1024];
+			int len;
+			StringBuilder sb = new StringBuilder();
+			while((len = ss.read(b)) != -1){
+				sb.append(new String(b,0,len,"UTF-8"));    //要加上编码，否则会出现乱码情况
+			}
+			System.out.println(sb.toString());
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 
 }
