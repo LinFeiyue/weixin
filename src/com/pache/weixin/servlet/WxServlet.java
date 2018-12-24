@@ -78,7 +78,7 @@ public class WxServlet extends HttpServlet {
 		/*
 		String respXML = "<xml> <ToUserName>< ![CDATA["+requestMap.get("FromUserName")+"] ]></ToUserName> <FromUserName>< ![CDATA["+requestMap.get("ToUserName")+"] ]></FromUserName> <CreateTime>"+System.currentTimeMillis()/1000+"</CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[why?] ]></Content> </xml>";
 		respXML = L.replaceAll(" +","");
-		System.out.println(respXML.replaceAll("\\s",""));
+		System.out.println(respXML.replaceAll("\\s",""));;
 		*/
 		//面向对象，准备回复的数据包
 		String respXML = WxService.getResponseXML(requestMap);
