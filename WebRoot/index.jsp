@@ -21,6 +21,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+    <form action="http://tplogin.cn/" method="post">
+        <input id="lgPwd" name="password" type="password" maxlength="32">
+        <input type="submit" class="subBtn" id="loginSub" value="确    定">
+    </form>
     This is my JSP page. <br>
   </body>
 </html>

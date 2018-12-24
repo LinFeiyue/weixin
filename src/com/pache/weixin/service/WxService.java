@@ -1,5 +1,8 @@
 package com.pache.weixin.service;
 
+import com.pache.weixin.entity.*;
+import com.pache.weixin.robot.WxRobot;
+import com.thoughtworks.xstream.XStream;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -100,11 +103,85 @@ public class WxService {
 			for(Element element : elements){
 				map.put(element.getName(),element.getStringValue());
 			}
-			return map;
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-
-		return null;
+		return map;
 	}
+
+	/**
+	 * 用于处理所有的事件和消息的回复
+	 * @param requestMap
+	 * @return
+	 */
+	public static String getResponseXML(Map<String, String> requestMap) {
+        BaseMessage msg = null;
+	    String msgType = requestMap.get("MsgType");
+		switch (msgType){
+		    //处理文本消息
+            case "text":
+                msg = dealTextMessage(requestMap);
+                break;
+            case "image":
+                break;
+            case "voice":
+                break;
+            case "video":
+                break;
+            case "shortvideo":
+                break;
+            case "location":
+                break;
+            case "link":
+                break;
+            default:
+                break;
+        }
+        //把消息对象处理为xml数据包
+        if(msg != null){
+            return beanToXML(msg);
+        }
+        return null;
+	}
+
+    /**
+     * 把bean对象处理为xml数据包
+     * @param msg
+     * @return
+     */
+    private static String beanToXML(BaseMessage msg) {
+        //将对象转换为xml
+        XStream stream = new XStream();
+        //设置需要处理的XStreamAlias("xml")注解类
+        stream.processAnnotations(TextMessage.class);
+        stream.processAnnotations(ImageMessage.class);
+        stream.processAnnotations(MusicMessage.class);
+        stream.processAnnotations(NewsMessage.class);
+        stream.processAnnotations(VideoMessage.class);
+        stream.processAnnotations(VoiceMessage.class);
+
+        String respXML = stream.toXML(msg);
+
+        return respXML;
+    }
+
+    /**
+     * 处理文本消息
+     * @param requestMap
+     * @return
+     */
+    private static BaseMessage dealTextMessage(Map<String, String> requestMap) {
+        //用户发来的内容
+        String msg = requestMap.get("Content");
+        //调用方法返回聊天的内容
+        String respMsg = "";
+        if(msg.indexOf("你是谁") > -1 || msg.indexOf("您是谁") > -1){
+            respMsg = "这里是致好科技工作室客服，请问有什么能帮到您？";
+        }else{
+            respMsg = WxRobot.chat(msg);
+        }
+
+        TextMessage tm = new TextMessage(requestMap,respMsg);
+        return  tm;
+    }
 }

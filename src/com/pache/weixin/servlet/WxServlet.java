@@ -65,13 +65,26 @@ public class WxServlet extends HttpServlet {
 		System.out.println("post");
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-
-		//查看用户发送到服务器得普通消息
+		PrintWriter out = response.getWriter();
+		//查看用户发送到服务器得普通消息，以字符串格式展示
 //		lookMsgInfo(request,response);
 
+		//提取用户发送到服务起的普通消息，并以map格式存储
 		Map<String,String> requestMap = WxService.parseRequest(request.getInputStream());
-
 		System.out.println(requestMap);
+
+		//准备回复的数据包
+		//演示数据
+		/*
+		String respXML = "<xml> <ToUserName>< ![CDATA["+requestMap.get("FromUserName")+"] ]></ToUserName> <FromUserName>< ![CDATA["+requestMap.get("ToUserName")+"] ]></FromUserName> <CreateTime>"+System.currentTimeMillis()/1000+"</CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[why?] ]></Content> </xml>";
+		respXML = L.replaceAll(" +","");
+		System.out.println(respXML.replaceAll("\\s",""));
+		*/
+		//面向对象，准备回复的数据包
+		String respXML = WxService.getResponseXML(requestMap);
+		out.write(respXML);
+		out.flush();
+		out.close();
 	}
 
 	/**
