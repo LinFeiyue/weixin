@@ -1,10 +1,17 @@
 package com.pache.weixin.entity;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("item")
 public class Article {
 
+    @XStreamAlias("Title")
     private String title;
+    @XStreamAlias("Description")
     private String description;
+    @XStreamAlias("PicUrl")
     private String picUrl;
+    @XStreamAlias("Url")
     private String url;
 
     public String getTitle() {

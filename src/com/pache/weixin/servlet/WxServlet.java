@@ -82,6 +82,7 @@ public class WxServlet extends HttpServlet {
 		*/
 		//面向对象，准备回复的数据包
 		String respXML = WxService.getResponseXML(requestMap);
+		System.out.println(respXML);
 		out.write(respXML);
 		out.flush();
 		out.close();

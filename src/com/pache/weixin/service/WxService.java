@@ -10,10 +10,7 @@ import org.dom4j.io.SAXReader;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author LinLiangjia
@@ -159,6 +156,7 @@ public class WxService {
         stream.processAnnotations(NewsMessage.class);
         stream.processAnnotations(VideoMessage.class);
         stream.processAnnotations(VoiceMessage.class);
+        stream.processAnnotations(VoiceMessage.class);
 
         String respXML = stream.toXML(msg);
 
@@ -177,6 +175,11 @@ public class WxService {
         String respMsg = "";
         if(msg.indexOf("你是谁") > -1 || msg.indexOf("您是谁") > -1){
             respMsg = "这里是致好科技工作室客服，请问有什么能帮到您？";
+        }else if("图文".equals(msg)){
+            List<Article> articles = new ArrayList<>();
+            articles.add(new Article("这是图文的标题","这是图文的描述","http://mmbiz.qpic.cn/mmbiz_jpg/bdrib2b2UULa1ia3ibEXvuT85A4iccbib5hzHESdJ1K6KNqtIHLMePNzJAdGecBNZLDDU3vThgQE6txYHolGQMS4gDA/0","https://www.baidu.com/"));
+            NewsMessage nm = new NewsMessage(requestMap,articles);
+            return  nm;
         }else{
             respMsg = WxRobot.chat(msg);
         }
