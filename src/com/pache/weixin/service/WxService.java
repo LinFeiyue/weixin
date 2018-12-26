@@ -2,7 +2,10 @@ package com.pache.weixin.service;
 
 import com.pache.weixin.entity.*;
 import com.pache.weixin.robot.WxRobot;
+import com.pache.weixin.util.Constants;
+import com.pache.weixin.util.NetUtils;
 import com.thoughtworks.xstream.XStream;
+import net.sf.json.JSONObject;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -19,8 +22,8 @@ import java.util.*;
  * 
  */
 public class WxService {
-	
-	private static final String TOKEN = "dev_token";
+
+    private static AccessToken at;
 	
 	/**
 	 * @Description: 验证签名
@@ -35,7 +38,7 @@ public class WxService {
 		/*
 		 * 1）将token、timestamp、nonce三个参数进行字典序排序
 		 */
-		String[] strs = new String[]{TOKEN,timestamp,nonce};
+		String[] strs = new String[]{Constants.TOKEN,timestamp,nonce};
 		Arrays.sort(strs);
 		/* 2）将三个参数字符串拼接成一个字符串进行sha1加密 
 		 */
@@ -187,4 +190,28 @@ public class WxService {
         TextMessage tm = new TextMessage(requestMap,respMsg);
         return  tm;
     }
+
+    /**
+     * 获取TOKEN信息，并封装到对象中
+     */
+    private static void getToken(){
+        String url = Constants.GET_ACCESS_TOKEN_URL.replaceAll("APPID",Constants.APPID).replaceAll("APPSECRET",Constants.APPSECRET);
+        String jsonStr = NetUtils.getJSONStrFromUrl(url);
+        JSONObject jsonObject = JSONObject.fromObject(jsonStr);
+        String access_token = jsonObject.getString("access_token");
+        String expires_in = jsonObject.getString("expires_in");
+        at = new AccessToken(access_token,expires_in);
+    }
+
+    /**
+     * 更新并获取TOKEN信息
+     * @return
+     */
+    public static String getAccessToken(){
+        if(at == null || at.isExpire() ){
+            getToken();
+        }
+        return at.getAccessToken();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.pache.weixin.test;
 
 import com.pache.weixin.entity.*;
+import com.pache.weixin.service.WxService;
 import com.thoughtworks.xstream.XStream;
 import org.junit.Test;
 
@@ -9,6 +10,18 @@ import java.util.Map;
 
 public class TestWx {
 
+    /**
+     * 测试TOKEN的获取
+     */
+    @Test
+    public void testToken(){
+       String accessToken = WxService.getAccessToken();
+       System.out.println(accessToken);
+    }
+
+    /**
+     * 测试对象转xml
+     */
     @Test
     public void testMsg(){
 
