@@ -15,9 +15,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
+    <script type="text/javascript" src="resources/js/jquery-3.2.1.min.js"></script>
+
+      <script type="text/javascript">
+          $(function(){
+              $("button").click(function(){
+                  var url = "TicketServlet";
+                  $.get(url,function(ticket){
+                      var src = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+ticket;
+                      $("img").attr("src",src);
+                  });
+
+              });
+          });
+      </script>
   </head>
   
   <body>
@@ -25,6 +36,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <input id="lgPwd" name="password" type="password" maxlength="32">
         <input type="submit" class="subBtn" id="loginSub" value="确    定">
     </form>
+    <br>
+    <button >生成二维码</button>
+    <img src="" alt="">
     This is my JSP page. <br>
   </body>
 </html>

@@ -69,7 +69,7 @@ public class WxServlet extends HttpServlet {
 		//查看用户发送到服务器得普通消息，以字符串格式展示
 //		lookMsgInfo(request,response);
 
-		//提取用户发送到服务起的普通消息，并以map格式存储
+		//提取用户发送到服务起的普通消息（包括二维码扫描），并以map格式存储
 		Map<String,String> requestMap = WxService.parseRequest(request.getInputStream());
 		System.out.println(requestMap);
 

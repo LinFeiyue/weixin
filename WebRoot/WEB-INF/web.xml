@@ -12,10 +12,30 @@
     <servlet-class>com.pache.weixin.servlet.WxServlet</servlet-class>
   </servlet>
 
-  <servlet-mapping>
+    <servlet-mapping>
     <servlet-name>WxServlet</servlet-name>
     <url-pattern>/wx</url-pattern>
-  </servlet-mapping>	
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>GetTicketServlet</servlet-name>
+    <servlet-class>com.pache.weixin.servlet.GetTicketServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>GetTicketServlet</servlet-name>
+    <url-pattern>/TicketServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetUserInfoServlet</servlet-name>
+    <servlet-class>com.pache.weixin.servlet.GetUserInfoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetUserInfoServlet</servlet-name>
+    <url-pattern>/GetUserInfoServlet</url-pattern>
+  </servlet-mapping>
+
+
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
